@@ -13,6 +13,14 @@ categoriesRoutes.get("/", (req, res) => {
 categoriesRoutes.post("/", (req, res) => {
   const { name, description } = req.body;
 
+  const categoryAlreadyExists = categoriesRepository.findByName(name);
+
+  if (categoryAlreadyExists) {
+    return res.status(400).json({
+      error: "Category already exists.",
+    });
+  }
+
   const category = categoriesRepository.create({ name, description });
 
   return res.status(201).json(category);
