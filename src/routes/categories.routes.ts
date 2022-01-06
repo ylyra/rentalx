@@ -7,15 +7,16 @@ const categories = [];
 
 categoriesRoutes.post("/categories", (req, res) => {
   const { name, description } = req.body;
-
-  categories.push({
+  const category = {
     id: uuidv4(),
     name,
     description,
     created_at: new Date(),
-  });
+  };
 
-  return res.status(201);
+  categories.push(category);
+
+  return res.status(201).json(category);
 });
 
 export { categoriesRoutes };
