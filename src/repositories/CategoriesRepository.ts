@@ -13,6 +13,10 @@ class CategoriesRepository {
     this.categories = [];
   }
 
+  list(): Category[] {
+    return this.categories;
+  }
+
   create({ name, description }: ICreateCategoryDTO) {
     const category = new Category();
     Object.assign(category, {
