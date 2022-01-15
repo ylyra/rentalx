@@ -25,7 +25,7 @@
                     "type": "object",
                     "properties": {
                       "id": {
-                        "type": "string"
+                        "type": "uuid"
                       },
                       "name": {
                         "type": "string"
@@ -34,7 +34,7 @@
                         "type": "string"
                       },
                       "created_at": {
-                        "type": "string"
+                        "type": "date"
                       }
                     }
                   }
@@ -78,7 +78,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "uuid"
                     },
                     "name": {
                       "type": "string"
@@ -87,7 +87,7 @@
                       "type": "string"
                     },
                     "created_at": {
-                      "type": "string"
+                      "type": "date"
                     }
                   }
                 }
@@ -97,6 +97,125 @@
           "500": {
             "description": "Category already exists"
           }
+        }
+      }
+    },
+    "/api/v1/categories/import": {
+      "post": {
+        "tags": ["Category"],
+        "summary": "Upload a new category",
+        "description": "Created new categories base on a file with type csv",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/v1/specifications": {
+      "get": {
+        "tags": ["Specifications"],
+        "summary": "List all specifications",
+        "description": "List all specifications created",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "uuid"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "date"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Specifications"],
+        "summary": "Create a specification",
+        "description": "Created a new unique specification for cars",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Specification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Specification already exists"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Specification": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
         }
       }
     }

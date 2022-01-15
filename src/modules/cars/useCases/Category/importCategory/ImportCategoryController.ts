@@ -9,7 +9,7 @@ class ImportCategoryController {
     const importCategoryService = container.resolve(ImportCategoryService);
     await importCategoryService.execute(file);
 
-    return res.send();
+    return res.status(201).send();
   }
 }
 
