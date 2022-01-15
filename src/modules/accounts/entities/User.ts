@@ -8,7 +8,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 @Entity()
-@Unique(["username", "email", "driver_license"])
+@Unique(["email", "driver_license"])
 class User {
   @PrimaryColumn()
   id: string;

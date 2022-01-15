@@ -7,8 +7,17 @@ interface ICreateUserDTO {
   driver_license: string;
 }
 
-interface IUsersRepository {
-  create(data: ICreateUserDTO): Promise<User>;
+interface IFindByEmailOrDriverLicense {
+  email: string;
+  driver_license: string;
 }
 
-export { IUsersRepository, ICreateUserDTO };
+interface IUsersRepository {
+  create(data: ICreateUserDTO): Promise<User>;
+  findByEmailOrDriverLicense({
+    email,
+    driver_license,
+  }: IFindByEmailOrDriverLicense): Promise<User>;
+}
+
+export { IUsersRepository, ICreateUserDTO, IFindByEmailOrDriverLicense };
