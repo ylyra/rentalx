@@ -14,6 +14,8 @@ interface IFindByEmailOrDriverLicense {
 
 interface IUsersRepository {
   create(data: ICreateUserDTO): Promise<User>;
+  findById(id: string): Promise<User>;
+  findByEmail(email: string): Promise<User>;
   findByEmailOrDriverLicense({
     email,
     driver_license,
