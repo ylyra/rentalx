@@ -4,12 +4,12 @@ import "express-async-errors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
 
-import "./database";
-import "./shared/container";
+import "../typeorm";
+import "../../container";
 
-import errorHandler from "./errors/handler";
+import swaggerSetup from "../../../swagger.json";
+import errorHandler from "../../errors/handler";
 import { router } from "./routes/index.routes";
-import swaggerSetup from "./swagger.json";
 
 const app = express();
 const port = 3333 || process.env.PORT;
