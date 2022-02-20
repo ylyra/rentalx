@@ -1,13 +1,21 @@
-import { createConnection, getConnectionOptions } from "typeorm";
+import { Connection, createConnections } from "typeorm";
 
-interface IOptions {
-  host: string;
+let connectionInstance: Connection;
+
+export async function createConnection(): Promise<void> {
+  if (connectionInstance) {
+    throw new Error("Connection already created");
+  }
+
+  const [connection] = await createConnections();
+
+  connectionInstance = connection;
 }
 
-getConnectionOptions().then((options) => {
-  const newOptions = options as IOptions;
-  newOptions.host = "database_rentalx";
-  createConnection({
-    ...options,
-  });
-});
+export async function getConnection(): Promise<Connection> {
+  if (!connectionInstance) {
+    throw new Error("Connection not set");
+  }
+
+  return connectionInstance;
+}

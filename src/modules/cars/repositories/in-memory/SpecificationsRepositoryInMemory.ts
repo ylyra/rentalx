@@ -1,0 +1,44 @@
+import { Specification } from "../../infra/typeorm/entities/Specification";
+import {
+  ICreateSpecificationDTO,
+  ISpecificationRepository,
+} from "../Specification/ISpecificationRepository";
+
+class SpecificationsRepositoryInMemory implements ISpecificationRepository {
+  specifications: Specification[] = [];
+
+  async findByIds(ids: string[]): Promise<Specification[]> {
+    const specifications = this.specifications.filter((specification) =>
+      ids.includes(specification.id)
+    );
+    return specifications;
+  }
+
+  async findByName(name: string): Promise<Specification> {
+    const specification = this.specifications.find(
+      (specification) => specification.name === name
+    );
+    return specification;
+  }
+
+  async list(): Promise<Specification[]> {
+    return this.specifications;
+  }
+
+  async create({
+    name,
+    description,
+  }: ICreateSpecificationDTO): Promise<Specification> {
+    const specification = new Specification();
+    Object.assign(specification, {
+      name,
+      description,
+    });
+
+    this.specifications.push(specification);
+
+    return specification;
+  }
+}
+
+export { SpecificationsRepositoryInMemory };

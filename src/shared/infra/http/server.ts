@@ -5,13 +5,14 @@ import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
 import "reflect-metadata";
 
-import "../typeorm";
 import "../../container";
 
 import swaggerSetup from "../../../swagger.json";
 import errorHandler from "../../errors/handler";
+import { createConnection } from "../typeorm";
 import { router } from "./routes/index.routes";
 
+createConnection();
 const app = express();
 const port = 3333 || process.env.PORT;
 
