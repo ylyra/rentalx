@@ -1,21 +1,16 @@
-import { Connection, createConnections } from "typeorm";
+import { Connection, createConnection, getConnectionOptions } from "typeorm";
 
-let connectionInstance: Connection;
+// host = "database_rentalx"
+export default async (host = "database_rentalx"): Promise<Connection> => {
+  const defaultOptions = await getConnectionOptions();
 
-export async function createConnection(): Promise<void> {
-  if (connectionInstance) {
-    throw new Error("Connection already created");
-  }
-
-  const [connection] = await createConnections();
-
-  connectionInstance = connection;
-}
-
-export async function getConnection(): Promise<Connection> {
-  if (!connectionInstance) {
-    throw new Error("Connection not set");
-  }
-
-  return connectionInstance;
-}
+  return createConnection(
+    Object.assign(defaultOptions, {
+      host: process.env.NODE_ENV === "test" ? "localhost" : host,
+      database:
+        process.env.NODE_ENV === "test"
+          ? process.env.TYPEORM_DATABASE_TEST
+          : defaultOptions.database,
+    })
+  );
+};

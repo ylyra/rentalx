@@ -8,7 +8,7 @@ class AuthenticateUserController {
     const { email, password } = req.body;
     const authenticateUserService = container.resolve(AuthenticateUserService);
 
-    const authenticationInfo = authenticateUserService.execute({
+    const authenticationInfo = await authenticateUserService.execute({
       email,
       password,
     });

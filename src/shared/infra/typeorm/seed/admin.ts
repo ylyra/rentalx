@@ -1,12 +1,10 @@
 import { hash } from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
-import { createConnection, getConnection } from "..";
+import createConnection from "..";
 
 async function create() {
-  await createConnection();
-
-  const connection = await getConnection();
+  const connection = await createConnection();
 
   const id = uuidv4();
   const password = await hash("admin", 8);

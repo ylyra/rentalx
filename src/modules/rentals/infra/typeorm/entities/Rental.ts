@@ -3,36 +3,38 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryColumn,
-  Unique,
+  UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
-@Entity("users")
-@Unique(["email", "driver_license"])
-class User {
+@Entity("rentals")
+class Rental {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  name: string;
+  car_id: string;
 
   @Column()
-  password: string;
+  user_id: string;
 
   @Column()
-  email: string;
+  start_date: Date;
 
   @Column()
-  driver_license: string;
+  end_date: Date;
 
   @Column()
-  isAdmin: boolean;
+  expected_return_date: Date;
 
   @Column()
-  avatar?: string;
+  total: number;
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
   constructor() {
     if (!this.id) {
@@ -41,4 +43,4 @@ class User {
   }
 }
 
-export { User };
+export { Rental };
