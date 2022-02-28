@@ -38,16 +38,13 @@ class CreateRentalService {
       throw new AppError("Car not found");
     }
 
+    if (!car.available) {
+      throw new AppError("Car not available");
+    }
+
     const user = await this.usersRepository.findById(user_id);
     if (!user) {
       throw new AppError("User not found");
-    }
-
-    const carNotAvailable = await this.rentalRepository.findOpenRentalByCar(
-      car_id
-    );
-    if (carNotAvailable) {
-      throw new AppError("Car not available");
     }
 
     const userNotAvailable = await this.rentalRepository.findOpenRentalByUser(
