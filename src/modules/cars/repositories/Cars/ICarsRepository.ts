@@ -15,6 +15,7 @@ interface ICreateCarDTO {
 
 interface ICarsRepository {
   create(data: ICreateCarDTO): Promise<Car>;
+  updateAvailabilty(car_id: string, available: boolean): Promise<void>;
   findById(car_id: string): Promise<Car>;
   findByLicensePlate(license_plate: string): Promise<Car>;
   findAvailable(

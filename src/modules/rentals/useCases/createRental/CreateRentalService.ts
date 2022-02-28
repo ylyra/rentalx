@@ -77,6 +77,8 @@ class CreateRentalService {
       expected_return_date,
     });
 
+    await this.carsRepository.updateAvailabilty(car_id, false);
+
     return rental;
   }
 }
