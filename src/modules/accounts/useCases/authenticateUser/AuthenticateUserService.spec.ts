@@ -16,6 +16,7 @@ describe("Authenticate User", () => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
     userTokensInMemory = new UserTokensInMemory();
     dayJsDateProvider = new DayJsDateProvider();
+
     authenticateUserService = new AuthenticateUserService(
       usersRepositoryInMemory,
       userTokensInMemory,
