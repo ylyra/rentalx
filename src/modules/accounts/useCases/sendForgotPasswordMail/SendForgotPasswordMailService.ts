@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidv4 } from "uuid";
 
@@ -35,10 +36,23 @@ class SendForgotPasswordMailService {
       expires_date,
     });
 
+    const templatePath = resolve(
+      __dirname,
+      "..",
+      "..",
+      "views",
+      "emails",
+      "forgotPassword.hbs"
+    );
+    const variables = {
+      name: user.name,
+      link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
+    };
     await this.mailProvider.sendMail(
       email,
       "Recuperação de senha",
-      `Para recuperar sua senha acesse o link: http://localhost:3000/reset-password?token=${token}`
+      variables,
+      templatePath
     );
   }
 }
