@@ -21,6 +21,10 @@ class CreateUserService {
     password,
     driver_license,
   }: ICreateUserDTO): Promise<User> {
+    if (!name || !email || !password || !driver_license) {
+      throw new AppError("Missing data");
+    }
+
     const userAlreadyExists =
       await this.usersRepository.findByEmailOrDriverLicense({
         email,

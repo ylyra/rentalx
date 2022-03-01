@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 
 import { User } from "./User";
 
@@ -29,11 +29,11 @@ class UserTokens {
   expires_date: Date;
 
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   constructor() {
     if (!this.id) {
-      this.id = uuidv4();
+      this.id = uuidV4();
     }
   }
 }

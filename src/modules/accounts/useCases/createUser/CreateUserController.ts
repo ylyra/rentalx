@@ -15,7 +15,7 @@ class CreateUserController {
       driver_license,
     });
 
-    return res.send(201).json(user);
+    return res.status(201).json(user);
   }
 }
 
