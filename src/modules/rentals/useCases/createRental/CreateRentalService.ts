@@ -63,7 +63,7 @@ class CreateRentalService {
       start_date,
       expected_return_date
     );
-    if (compare < compareHoursMinimum) {
+    if (compare >= compareHoursMinimum) {
       throw new AppError("Expected return date must be at least 24 hours");
     }
 

@@ -63,37 +63,37 @@ describe("Create Rental", () => {
   });
 
   it("should be not be able to create a new rental if car already is rented", async () => {
+    const user = await usersRepositoryInMemory.create({
+      name: "Yan",
+      email: "yan@lyra.souza",
+      password: "123",
+      driver_license: "000123",
+    });
+    const user2 = await usersRepositoryInMemory.create({
+      name: "Yan 1",
+      email: "yan1@lyra.souza",
+      password: "123",
+      driver_license: "000123",
+    });
+
+    const car = await carsRepositoryInMemory.create({
+      name: "name car",
+      description: "description car",
+      daily_rate: 100,
+      license_plate: "ABC-1234",
+      fine_amount: 10,
+      brand: "Brand",
+      category_id: "category",
+    });
+
+    await createRentalService.execute({
+      car_id: car.id,
+      user_id: user.id,
+      start_date: dayjs().toDate(),
+      expected_return_date: expectedReturnDate,
+    });
+
     expect(async () => {
-      const user = await usersRepositoryInMemory.create({
-        name: "Yan",
-        email: "yan@lyra.souza",
-        password: "123",
-        driver_license: "000123",
-      });
-      const user2 = await usersRepositoryInMemory.create({
-        name: "Yan 1",
-        email: "yan1@lyra.souza",
-        password: "123",
-        driver_license: "000123",
-      });
-
-      const car = await carsRepositoryInMemory.create({
-        name: "name car",
-        description: "description car",
-        daily_rate: 100,
-        license_plate: "ABC-1234",
-        fine_amount: 10,
-        brand: "Brand",
-        category_id: "category",
-      });
-
-      await createRentalService.execute({
-        car_id: car.id,
-        user_id: user.id,
-        start_date: dayjs().toDate(),
-        expected_return_date: expectedReturnDate,
-      });
-
       await createRentalService.execute({
         car_id: car.id,
         user_id: user2.id,
@@ -104,33 +104,33 @@ describe("Create Rental", () => {
   });
 
   it("should be not be able to create a new rental if user already is renting a car", async () => {
+    const user = await usersRepositoryInMemory.create({
+      name: "Yan",
+      email: "yan@lyra.souza",
+      password: "123",
+      driver_license: "000123",
+    });
+
+    const car = await carsRepositoryInMemory.create({
+      name: "name car",
+      description: "description car",
+      daily_rate: 100,
+      license_plate: "ABC-1234",
+      fine_amount: 10,
+      brand: "Brand",
+      category_id: "category",
+    });
+    const car2 = await carsRepositoryInMemory.create({
+      name: "name car 2",
+      description: "description car",
+      daily_rate: 100,
+      license_plate: "ABC-4567",
+      fine_amount: 10,
+      brand: "Brand",
+      category_id: "category",
+    });
+
     expect(async () => {
-      const user = await usersRepositoryInMemory.create({
-        name: "Yan",
-        email: "yan@lyra.souza",
-        password: "123",
-        driver_license: "000123",
-      });
-
-      const car = await carsRepositoryInMemory.create({
-        name: "name car",
-        description: "description car",
-        daily_rate: 100,
-        license_plate: "ABC-1234",
-        fine_amount: 10,
-        brand: "Brand",
-        category_id: "category",
-      });
-      const car2 = await carsRepositoryInMemory.create({
-        name: "name car 2",
-        description: "description car",
-        daily_rate: 100,
-        license_plate: "ABC-4567",
-        fine_amount: 10,
-        brand: "Brand",
-        category_id: "category",
-      });
-
       await createRentalService.execute({
         car_id: car.id,
         user_id: user.id,
@@ -148,14 +148,13 @@ describe("Create Rental", () => {
   });
 
   it("should be not be able to rent a car that does not exists", async () => {
+    const user = await usersRepositoryInMemory.create({
+      name: "Yan",
+      email: "yan@lyra.souza",
+      password: "123",
+      driver_license: "000123",
+    });
     expect(async () => {
-      const user = await usersRepositoryInMemory.create({
-        name: "Yan",
-        email: "yan@lyra.souza",
-        password: "123",
-        driver_license: "000123",
-      });
-
       await createRentalService.execute({
         car_id: "123456",
         user_id: user.id,
@@ -166,17 +165,17 @@ describe("Create Rental", () => {
   });
 
   it("should be not be able to rent a car if user does not exists", async () => {
-    expect(async () => {
-      const car = await carsRepositoryInMemory.create({
-        name: "name car",
-        description: "description car",
-        daily_rate: 100,
-        license_plate: "ABC-1234",
-        fine_amount: 10,
-        brand: "Brand",
-        category_id: "category",
-      });
+    const car = await carsRepositoryInMemory.create({
+      name: "name car",
+      description: "description car",
+      daily_rate: 100,
+      license_plate: "ABC-1234",
+      fine_amount: 10,
+      brand: "Brand",
+      category_id: "category",
+    });
 
+    expect(async () => {
       await createRentalService.execute({
         car_id: car.id,
         user_id: "123456",
@@ -187,24 +186,24 @@ describe("Create Rental", () => {
   });
 
   it("should be not be able to rent a car if start day is higher then expected end", async () => {
+    const user = await usersRepositoryInMemory.create({
+      name: "Yan",
+      email: "yan@lyra.souza",
+      password: "123",
+      driver_license: "000123",
+    });
+
+    const car = await carsRepositoryInMemory.create({
+      name: "name car",
+      description: "description car",
+      daily_rate: 100,
+      license_plate: "ABC-1234",
+      fine_amount: 10,
+      brand: "Brand",
+      category_id: "category",
+    });
+
     expect(async () => {
-      const user = await usersRepositoryInMemory.create({
-        name: "Yan",
-        email: "yan@lyra.souza",
-        password: "123",
-        driver_license: "000123",
-      });
-
-      const car = await carsRepositoryInMemory.create({
-        name: "name car",
-        description: "description car",
-        daily_rate: 100,
-        license_plate: "ABC-1234",
-        fine_amount: 10,
-        brand: "Brand",
-        category_id: "category",
-      });
-
       await createRentalService.execute({
         car_id: car.id,
         user_id: user.id,
@@ -215,24 +214,24 @@ describe("Create Rental", () => {
   });
 
   it("should be not be able to rent a car if rent time is less then 24 hours", async () => {
+    const user = await usersRepositoryInMemory.create({
+      name: "Yan",
+      email: "yan@lyra.souza",
+      password: "123",
+      driver_license: "000123",
+    });
+
+    const car = await carsRepositoryInMemory.create({
+      name: "name car",
+      description: "description car",
+      daily_rate: 100,
+      license_plate: "ABC-1234",
+      fine_amount: 10,
+      brand: "Brand",
+      category_id: "category",
+    });
+
     expect(async () => {
-      const user = await usersRepositoryInMemory.create({
-        name: "Yan",
-        email: "yan@lyra.souza",
-        password: "123",
-        driver_license: "000123",
-      });
-
-      const car = await carsRepositoryInMemory.create({
-        name: "name car",
-        description: "description car",
-        daily_rate: 100,
-        license_plate: "ABC-1234",
-        fine_amount: 10,
-        brand: "Brand",
-        category_id: "category",
-      });
-
       await createRentalService.execute({
         car_id: car.id,
         user_id: user.id,
