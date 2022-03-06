@@ -7,9 +7,9 @@ module.exports = {
   database: process.env.NODE_ENV
     ? process.env.TYPEORM_DATABASE_TEST
     : process.env.TYPEORM_DATABASE,
-  migrations: ["./dist/shared/infra/typeorm/migrations/*.ts"],
-  entities: ["./dist/modules/**/entities/*.ts"],
-  seeds: ["./dist/shared/infra/typeorm/seeds/*.ts"],
+  migrations: ["./dist/shared/infra/typeorm/migrations/*.js"],
+  entities: ["./dist/modules/**/entities/*.js"],
+  seeds: ["./dist/shared/infra/typeorm/seeds/*.js"],
   cli: {
     migrationsDir: "./dist/shared/infra/typeorm/migrations/",
   },
