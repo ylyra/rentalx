@@ -43,7 +43,7 @@ class User {
       case "s3":
         return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
       case "local":
-        return `http://localhost:${port}/files/${this.avatar}`;
+        return `http://localhost:${port}/avatar/${this.avatar}`;
       default:
         return null;
     }
