@@ -41,7 +41,7 @@ class User {
   avatar_url(): string {
     switch (process.env.STORAGE_PROVIDER) {
       case "s3":
-        return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
+        return `${process.env.AWS_BUCKET_URL}avatar/${this.avatar}`;
       case "local":
         return `http://localhost:${port}/avatar/${this.avatar}`;
       default:
