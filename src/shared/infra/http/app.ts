@@ -11,6 +11,7 @@ import upload from "../../../config/upload";
 import swaggerSetup from "../../../swagger.json";
 import errorHandler from "../../errors/handler";
 import createConnection from "../typeorm";
+import rateLimiter from "./middlewares/rateLimiter";
 import { router } from "./routes/index.routes";
 
 createConnection();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 
+app.use(rateLimiter);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSetup));
 app.use("/avatar", express.static(`${upload.tmpFolder}/avatar`));
 app.use("/cars", express.static(`${upload.tmpFolder}/cars`));
