@@ -1,13 +1,13 @@
-import { Connection, createConnection, getConnectionOptions } from "typeorm";
-
-let connectionInstance: Connection;
+import { Connection, ConnectionManager, getConnectionOptions } from "typeorm";
 
 // host = "database_rentalx"
 export default async (): Promise<Connection> => {
-  const defaultOptions = await getConnectionOptions();
+  const c = new ConnectionManager();
+  let connectionInstance: Connection;
 
-  if (!connectionInstance) {
-    connectionInstance = await createConnection(
+  if (!c.has("default")) {
+    const defaultOptions = await getConnectionOptions();
+    connectionInstance = c.create(
       Object.assign(defaultOptions, {
         database:
           process.env.NODE_ENV === "test"
@@ -15,6 +15,8 @@ export default async (): Promise<Connection> => {
             : defaultOptions.database,
       })
     );
+  } else {
+    connectionInstance = c.get("default");
   }
 
   return connectionInstance;
