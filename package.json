@@ -51,6 +51,8 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "@sentry/node": "^6.18.1",
+    "@sentry/tracing": "^6.18.1",
     "aws-sdk": "^2.1087.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
