@@ -25,17 +25,19 @@ class ResetUserPasswordService {
     }
 
     if (
-      !this.dateProvider.isAfter(
+      this.dateProvider.isAfter(
         this.dateProvider.dateNow(),
         userToken.expires_date
       )
     ) {
+      await this.userTokenRepository.deleteById(userToken.id);
       throw new AppError("Token expired");
     }
 
     const user = await this.usersRepository.findById(userToken.user_id);
 
     if (!user) {
+      await this.userTokenRepository.deleteById(userToken.id);
       throw new AppError("User does not exists");
     }
 

@@ -14,7 +14,7 @@ import { router } from "./routes/index.routes";
 
 createConnection();
 const app = express();
-const port = 3333 || process.env.PORT;
+const port = process.env.DEV_PORT || process.env.PORT;
 
 app.use(express.json());
 app.use(cors());

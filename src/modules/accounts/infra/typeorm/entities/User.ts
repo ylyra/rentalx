@@ -1,3 +1,4 @@
+import { Expose } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +7,8 @@ import {
   Unique,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+
+import { port } from "../../../../../shared/infra/http/app";
 
 @Entity("users")
 @Unique(["email", "driver_license"])
@@ -33,6 +36,18 @@ class User {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Expose({ name: "avatar_url" })
+  avatar_url(): string {
+    switch (process.env.STORAGE_PROVIDER) {
+      case "s3":
+        return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
+      case "local":
+        return `http://localhost:${port}/files/${this.avatar}`;
+      default:
+        return null;
+    }
+  }
 
   constructor() {
     if (!this.id) {

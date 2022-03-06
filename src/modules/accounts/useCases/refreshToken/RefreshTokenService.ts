@@ -11,6 +11,11 @@ interface IPayload {
   email: string;
 }
 
+interface ITokenResponse {
+  token: string;
+  refresh_token: string;
+}
+
 @injectable()
 class RefreshTokenService {
   constructor(
@@ -20,7 +25,7 @@ class RefreshTokenService {
     private dateProvider: IDateProvider
   ) {}
 
-  async execute(token: string): Promise<string> {
+  async execute(token: string): Promise<ITokenResponse> {
     const decode = verify(token, auth.secret_refresh_token) as IPayload;
 
     const userToken =
@@ -33,26 +38,24 @@ class RefreshTokenService {
       throw new AppError("Refresh token does not exists!");
     }
 
-    await this.userTokensRepository.deleteById(userToken.id);
+    const { refresh_token } = userToken;
 
-    const refresh_token = sign(
-      { email: decode.email },
-      auth.secret_refresh_token,
-      {
-        subject: decode.sub,
-        expiresIn: auth.expires_in_refresh_token,
-      }
-    );
-    const refresh_token_expires_date = this.dateProvider.addDays(
-      auth.expires_refresh_token_days
-    );
-    await this.userTokensRepository.create({
-      user_id: decode.sub,
-      refresh_token,
-      expires_date: refresh_token_expires_date,
+    if (
+      this.dateProvider.isAfter(
+        this.dateProvider.dateNow(),
+        userToken.expires_date
+      )
+    ) {
+      await this.userTokensRepository.deleteById(userToken.id);
+      throw new AppError("Token expired");
+    }
+
+    const newToken = sign({}, auth.secret_token, {
+      subject: decode.sub,
+      expiresIn: auth.expires_in_token,
     });
 
-    return refresh_token;
+    return { refresh_token, token: newToken };
   }
 }
 
